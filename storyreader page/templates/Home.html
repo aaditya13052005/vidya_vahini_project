@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vidya Vahini – Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&family=Yeseva+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
+</head>
+
+<body data-page="home">
+  <!-- 🔊 Background Audio -->
+  <audio autoplay loop hidden>
+    <source src="{{ url_for('static', filename='audio/background_audio.mp3') }}" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- 🎓 Top Emblems -->
+  <img src="{{ url_for('static', filename='Images/EmblemIE.png') }}" alt="Inclusive Education" class="top-left-emblem">
+  <img src="{{ url_for('static', filename='Images/EmblemVV.png') }}" alt="Vidya Vahini" class="top-right-emblem">
+
+  <!-- 👦👧 Mascots -->
+  <img src="{{ url_for('static', filename='Images/Shanthi-There you go-Pose-Flipped.png') }}" alt="Shanthi Mascot" class="bottom-left-mascot hover-effect">
+  <img src="{{ url_for('static', filename='Images/Prem-There you go-Pose.png') }}" alt="Prem Mascot" class="bottom-right-mascot hover-effect">
+
+  <!-- 🏠 Header -->
+  <header class="site-header">
+    <h1 class="main-title" style="font-family: 'Yeseva One', serif;">Sri Sathya Sai Vidya Vahini</h1>
+    <p class="subtitle" style="font-family: 'Quicksand', sans-serif; font-size: 2rem; margin-top: 6px;">INCLUSIVE EDUCATION</p>
+    
+    <input type="text" id="search-bar" placeholder="Search stories by title...">
+  </header>
+
+  <!-- 📚 Story Menu -->
+  <main>
+    <div class="story-menu-box">
+      <div class="story-container">
+        {% for story in stories %}
+            <a href="{{ url_for('read_story', story_id=story['story_id']) }}" class="story-card">
+                {{ story['title'] }}
+            </a>
+        {% endfor %}
+      </div>
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const bgAudio = document.querySelector("audio");
+    if (bgAudio) {
+      bgAudio.volume = 0.02; // Set volume to 20%
+    }
+  });
+</script>
+
+</body>
+</html>

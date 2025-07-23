@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ story_title }}</title>
+
+  <!-- ✅ Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Lexend&family=Open+Sans&family=Roboto&display=swap" rel="stylesheet">
+
+  <!-- ✅ OpenDyslexic font via CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/antijingoist/open-dyslexic/webkit.css">
+
+  <!-- ✅ Custom Stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/storyreader.css') }}" />
+</head>
+
+<body data-page="reader">
+
+  <!-- ✅ Story Title -->
+  <div id="storyTitle" class="story-title">
+  {{ story_title }}
+   </div>
+
+
+  <main>
+
+    <!-- ✅ Font Controls -->
+ <!-- ✅ Accessibility Controls: Font, Size, Contrast -->
+<div class="controls-row">
+  <!-- Font Selector -->
+  <div class="font-controls">
+    <label for="font-select">Font:</label>
+    <select id="font-select" class="control-btn">
+      <option value="">Default</option>
+      <option value="'Lexend', sans-serif">Lexend</option>
+      <option value="Arial, sans-serif">Arial</option>
+      <option value="Verdana, sans-serif">Verdana</option>
+      <option value="'Comic Sans MS', cursive, sans-serif">Comic Sans</option>
+      <option value="'OpenDyslexic', sans-serif">Open Dyslexic</option>
+      <option value="'Dyslexie', sans-serif">Dyslexie</option>
+      <option value="Calibri, sans-serif">Calibri</option>
+      <option value="'Century Gothic', sans-serif">Century Gothic</option>
+      <option value="Tahoma, sans-serif">Tahoma</option>
+      <option value="'Open Sans', sans-serif">Open Sans</option>
+      <option value="Roboto, sans-serif">Roboto</option>
+    </select>
+  </div>
+
+  <!-- Font Size Buttons -->
+  <div class="font-size-controls">
+    <button class="control-btn" onclick="adjustFontSize(-1)">A-</button>
+    <button class="control-btn" onclick="adjustFontSize(1)">A+</button>
+    <button class="control-btn" onclick="resetFontSize()">Reset</button>
+  </div>
+
+  <!-- Contrast Toggle -->
+  <div class="contrast-control">
+    <button id="contrast-toggle" class="control-btn" onclick="toggleContrast()">🌈 High Contrast: <span id="contrast-status">Off</span></button>
+  </div>
+</div>
+
+
+    <!-- ✅ Slide Container -->
+    <div class="slide-container">
+      {% for slide in slides %}
+      <section class="slide" data-slide-id="{{ slide.slide_id }}">
+        
+        <!-- ✅ Media Row -->
+        <div class="media-row">
+          {% if slide.image_url %}
+          <div class="media-box">
+            <img src="{{ slide.image_url }}" alt="Slide Image" />
+          </div>
+          {% endif %}
+
+          {% if slide.video_url %}
+          <div class="media-box">
+            <video src="{{ slide.video_url }}" muted autoplay loop></video>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- ✅ Slide Text -->
+        <div class="slide-text" id="text-{{ slide.slide_id }}">
+          {{ slide.highlighted_text | safe }}
+        </div>
+
+        <!-- ✅ Hidden Audio -->
+        <audio id="audio-{{ slide.slide_id }}" src="{{ slide.audio_url }}" hidden></audio>
+      </section>
+      {% endfor %}
+    </div>
+
+    <!-- ✅ Global Control Buttons -->
+    <div class="global-controls">
+      <div class="custom-controls">
+        <div class="left-controls">
+          <button id="prev-slide" class="control-btn">⬅️ Previous Slide</button>
+          <div id="speed-control-group" class="speed-control">
+                <button id="decrease">−</button>
+                <span id="speed-display">1.00x</span>
+                <button id="increase">+</button>
+          </div>
+        </div>
+
+        <button id="global-play-pause" class="main-play-button">▶️</button>
+
+        <div class="right-controls">
+          <button id="next-slide" class="control-btn">➡️ Next Slide</button>
+          <button id="download-audio" class="control-btn">⬇️ Download Audio</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ✅ Emblems & Mascots -->
+  <img src="{{ url_for('static', filename='Images/EmblemIE.png') }}" class="top-left-emblem" />
+  <img src="{{ url_for('static', filename='Images/EmblemVV.png') }}" class="top-right-emblem" />
+  <img src="{{ url_for('static', filename='Images/Shanthi-There you go-Pose-Flipped.png') }}" class="bottom-left-mascot" />
+  <img src="{{ url_for('static', filename='Images/Prem-There you go-Pose.png') }}" class="bottom-right-mascot" />
+
+  <!-- ✅ Home Button -->
+ <div class="home-button-wrapper">
+  <a href="{{ url_for('home') }}">
+    <button class="home-button">To Home</button>
+  </a>
+</div>
+
+  <!-- ✅ Dictionary Image Popup -->
+  <div id="image-popup" class="image-popup" style="display: none;">
+    <div class="popup-content">
+      <span id="close-popup" class="close">&times;</span>
+      <img id="popup-img" src="" alt="Word image" />
+    </div>
+  </div>
+
+  <!-- ✅ Dictionary Tooltip -->
+  <div class="dictionary-tooltip" style="display: none;"></div>
+
+  <!-- ✅ Script -->
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
